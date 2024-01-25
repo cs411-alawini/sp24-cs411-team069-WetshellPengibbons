@@ -4,24 +4,24 @@
 
 |   Info      |        Description     |
 | ----------- | ---------------------- |
-| TeamID      |        Team-000        |
-| TeamName    |         sample         |
-| Captain     |       Abdu Alawini     |
-| Captain     |  alawini@illinois.edu  |
-| Member1     |        Kevin Pei       |
-| Member1     |   kevin2@illinois.edu  |
-| Member2     |                        |
-| Member2     |                        |
-| Member3     |                        |
-| Member3     |                        |
+| TeamID      |        Team-069        |
+| TeamName    |         WetshellPengibbons         |
+| Captain     |       Max Hartman     |
+| Captain     |  maxh3@illinois.edu  |
+| Member1     |        Nathan Liu       |
+| Member1     |   nathan19@illinois.edu  |
+| Member2     |            Saashin Subramaniam             |
+| Member2     |          saashin2@illinois.edu              |
+| Member3     |            Michelle Ru            |
+| Member3     |              mru3@illinois.edu          |
 
 ## Project Information
 
 |   Info      |        Description     |
 | ----------- | ---------------------- |
-|  Title      |       ProjectTitle     |
-| System URL  |      link_to_system    |
-| Video Link  |      link_to_video     |
+|  Title      |       TBD     |
+| System URL  |      TBD    |
+| Video Link  |      TBD     |
 
 ## Project Summary
 
