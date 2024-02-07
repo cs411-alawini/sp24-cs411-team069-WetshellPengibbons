@@ -24,5 +24,5 @@
 | Video Link  |      TBD     |
 
 ## Project Summary
+The Course Compass project will intelligently find courses that students may find interesting based on Professor Ratings, average GPAs, and relevance to interests. The user will indicate interest in different courses, and our backend Machine Learning model will recommend courses based on similarity. The user will be able to set course preferences, such as minimum GPA, professor rating, terms offered, and more. Over time, the app will learn the preferences of the user and be able to recommend courses the user is likely interested in taking.
 
-This is a summary of the project!
