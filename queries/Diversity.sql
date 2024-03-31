@@ -29,4 +29,4 @@ WITH DeptGPA AS (
 SELECT g.DepartmentName, g.AvgGPA, ROUND(d.FemalePct, 2) AS FemalePct
 FROM DeptGPA g JOIN Department d ON g.DepartmentName = d.DepartmentName
 WHERE g.AvgGPA > 3.2 and d.FemalePct > 0.3
-ORDER BY g.AvgGPA ASC LIMIT 100;
+ORDER BY g.AvgGPA DESC, d.FemalePct DESC;
