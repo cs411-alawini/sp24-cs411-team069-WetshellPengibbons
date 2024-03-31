@@ -54,11 +54,11 @@ CREATE TABLE AverageGPA (
 
 CREATE TABLE Awards (
     ProfessorName VARCHAR(255) NOT NULL,
-    Award VARCHAR(255) NOT NULL,
+    Award VARCHAR(255),
     Department VARCHAR(255),
     CourseCode VARCHAR(10) NOT NULL,
-    Term VARCHAR(10),
-    PRIMARY KEY (ProfessorName, Award),
+    Term VARCHAR(10) NOT NULL,
+    PRIMARY KEY (ProfessorName, Term),
     FOREIGN KEY (ProfessorName) REFERENCES ProfessorInfo(ProfessorName),
     FOREIGN KEY (CourseCode) REFERENCES CourseInfo(CourseCode)
 );
