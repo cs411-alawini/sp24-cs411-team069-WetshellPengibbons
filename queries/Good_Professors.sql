@@ -21,7 +21,7 @@ SELECT
             )
         ), 2) AS AvgGPA
 FROM CourseInfo c LEFT JOIN AverageGPA ag ON c.CourseCode = ag.CourseCode
-LEFT JOIN Awards Aw ON c.ProfessorName = Aw.ProfessorName
+WHERE c.ProfessorName IN (SELECT ProfessorName FROM Awards)
 GROUP BY c.ProfessorName 
-HAVING AvgGPA > 3.75 
+HAVING AvgGPA > 3.5 
 ORDER BY AvgGPA DESC;
