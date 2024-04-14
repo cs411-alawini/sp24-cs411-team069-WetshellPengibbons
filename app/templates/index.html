@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Compass</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card-container {
+            width: 350px;
+            margin: 30px;
+            perspective: 1000px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+        .card img {
+            width: 100%;
+            display: block; /* removes bottom space/gap under image */
+        }
+        .card-info {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            position: absolute;
+            bottom: 80px; /* height of button container */
+            width: 100%;
+        }
+        .card-title {
+            margin: 0;
+        }
+        .card-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #fff;
+            border-radius: 0 0 10px 10px;
+        }
+        .button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+        .no-button {
+            background-color: #e74c3c;
+        }
+        .yes-button {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card">
+            <img src="https://via.placeholder.com/350x500" alt="Course Image">
+            <div class="card-info">
+                <h2 class="card-title">Course Title</h2>
+                <p class="card-text">Course Description</p>
+            </div>
+            <div class="buttons">
+                <button class="button no-button">No</button>
+                <button class="button yes-button">Yes</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
