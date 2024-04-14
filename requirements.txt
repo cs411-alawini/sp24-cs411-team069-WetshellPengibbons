@@ -1,2 +1,5 @@
 Flask
 google-cloud-storage
+numpy
+pandas
+Flask-WTF
