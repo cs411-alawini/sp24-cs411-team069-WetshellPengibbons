@@ -3,3 +3,5 @@ google-cloud-storage
 numpy
 pandas
 Flask-WTF
+gensim
+nltk
