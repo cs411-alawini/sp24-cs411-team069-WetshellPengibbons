@@ -17,6 +17,7 @@ course_title = ""
 course_code = ""
 professor = ""
 course_description = ""
+avg_gpa = 0.0
 image_link = 'https://alawini.web.illinois.edu/wp-content/uploads/2021/11/Home-Alawini-scaled.jpg'
 
 
@@ -66,6 +67,15 @@ with pool.connect() as db_conn:
     professor = course_data['ProfessorName']
     course_description = course_data['CourseDescription']
 
+    # course gpa
+    with open('queries/Course_AvgGPA.sql', 'r') as file:
+        avg_gpa_sql = file.read()
+    avg_gpa_query = sqlalchemy.text(avg_gpa_sql)
+
+    avg_gpa_result = db_conn.execute(avg_gpa_query, {'course_code': course_code}).fetchone()
+    print(avg_gpa_result)
+    avg_gpa = avg_gpa_result[1]
+    
 # Used to train word embedding_model
 #get_word_embeddings(pool)
 
@@ -105,7 +115,7 @@ def index():
         return redirect(url_for('index'))
     
     # This will display the NetID or 'Not Signed in'
-    return render_template('index.html', form=form, netid=session.get('netid', 'Not Signed in'), course_title=course_title, course_code=course_code, professor=professor, image_link=image_link)
+    return render_template('index.html', form=form, netid=session.get('netid', 'Not Signed in'), course_title=course_title, course_code=course_code, professor=professor, image_link=image_link, avg_gpa = avg_gpa)
 
 @app.route('/submit_response', methods=['POST'])
 def submit_response():
@@ -113,6 +123,7 @@ def submit_response():
     global course_title
     global professor
     global course_description
+    global avg_gpa
 
     user_response = request.form['response']
     if 'netid' in session:
@@ -157,6 +168,15 @@ def submit_response():
             course_code = course_data['CourseCode']
             professor = course_data['ProfessorName']
             course_description = course_data['CourseDescription']
+
+            # course gpa            
+            with open('queries/Course_AvgGPA.sql', 'r') as file:
+                avg_gpa_sql = file.read()
+            avg_gpa_query = sqlalchemy.text(avg_gpa_sql)
+
+            avg_gpa_result = db_conn.execute(avg_gpa_query, {'course_code': course_code}).fetchone()
+            print(avg_gpa_result)
+            avg_gpa = avg_gpa_result[1]
                 
     else:
         flash('You must be signed in to submit a response.')

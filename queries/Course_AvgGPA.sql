@@ -20,6 +20,6 @@ SELECT
                 ag.NumberF)
             )
         ), 2) AS AvgGPA
-FROM CourseInfo c LEFT JOIN AverageGPA ag ON c.CourseCode = ag.CourseCode
+FROM CourseInfo c LEFT JOIN AverageGPA ag ON c.CourseCode = ag.CourseCode 
+WHERE c.CourseCode = :course_code
 GROUP BY c.CourseCode
-ORDER BY AvgGPA DESC;
