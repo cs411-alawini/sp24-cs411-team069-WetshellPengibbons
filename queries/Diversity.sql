@@ -28,5 +28,5 @@ WITH DeptGPA AS (
 )
 SELECT g.DepartmentName, g.AvgGPA, ROUND(d.FemalePct, 2) AS FemalePct
 FROM DeptGPA g JOIN Department d ON g.DepartmentName = d.DepartmentName
-WHERE g.AvgGPA > 3.2 and d.FemalePct > 0.3
+WHERE g.AvgGPA > 3.2 and d.FemalePct > 0.5 and d.DepartmentName = :DepartmentName
 ORDER BY g.AvgGPA DESC, d.FemalePct DESC;

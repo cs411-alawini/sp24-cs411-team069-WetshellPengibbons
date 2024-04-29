@@ -149,6 +149,8 @@
                 <p class="card-text">{{ course_code }}</p>
                 <p class="Professor">{{ professor }}</p>
                 <p class="Average GPA">{{ avg_gpa }}</p>
+                <p class="Diversity Index">{{ diversity_index }}</p>
+                <p class="Good Professor">{{ good_prof }}</p>
             </div>
             <div class="buttons">
                 <form action="{{ url_for('submit_response') }}" method="post">

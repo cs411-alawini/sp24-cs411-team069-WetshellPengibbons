@@ -18,6 +18,9 @@ course_code = ""
 professor = ""
 course_description = ""
 avg_gpa = 0.0
+diversity_index = ""
+course_dept = ""
+good_prof = ""
 image_link = 'https://alawini.web.illinois.edu/wp-content/uploads/2021/11/Home-Alawini-scaled.jpg'
 
 
@@ -66,6 +69,7 @@ with pool.connect() as db_conn:
     course_code = course_data['CourseCode']
     professor = course_data['ProfessorName']
     course_description = course_data['CourseDescription']
+    course_dept = course_data['DepartmentName']
 
     # course gpa
     with open('queries/Course_AvgGPA.sql', 'r') as file:
@@ -73,8 +77,24 @@ with pool.connect() as db_conn:
     avg_gpa_query = sqlalchemy.text(avg_gpa_sql)
 
     avg_gpa_result = db_conn.execute(avg_gpa_query, {'course_code': course_code}).fetchone()
-    print(avg_gpa_result)
     avg_gpa = avg_gpa_result[1]
+
+    # diversity index
+    with open('queries/Diversity.sql', 'r') as file:
+        diversity_sql = file.read()
+    diversity_query = sqlalchemy.text(diversity_sql)
+
+    diversity_result = db_conn.execute(diversity_query, {'DepartmentName': course_dept}).fetchone()
+    print(f"Balls {avg_gpa}")
+    diversity_index = "Diverse!" if diversity_result is not None else "Not Diverse!"
+    if avg_gpa:
+        with open('queries/Good_Professors.sql', 'r') as file:
+            good_professor_sql = file.read()
+        good_professor_query = sqlalchemy.text(good_professor_sql)
+        good_professor_result = db_conn.execute(good_professor_query, {'ProfessorName': professor}).fetchone()
+        good_prof = "Good Professor!" if good_professor_result is not None else ""
+    else:
+        good_prof = ""
     
 # Used to train word embedding_model
 #get_word_embeddings(pool)
@@ -115,7 +135,8 @@ def index():
         return redirect(url_for('index'))
     
     # This will display the NetID or 'Not Signed in'
-    return render_template('index.html', form=form, netid=session.get('netid', 'Not Signed in'), course_title=course_title, course_code=course_code, professor=professor, image_link=image_link, avg_gpa = avg_gpa)
+    return render_template('index.html', form=form, netid=session.get('netid', 'Not Signed in'), course_title=course_title, 
+                            course_code=course_code, professor=professor, image_link=image_link, avg_gpa = avg_gpa, diversity_index=diversity_index, good_prof=good_prof)
 
 @app.route('/submit_response', methods=['POST'])
 def submit_response():
@@ -124,6 +145,9 @@ def submit_response():
     global professor
     global course_description
     global avg_gpa
+    global diversity_index
+    global course_dept
+    global good_prof
 
     user_response = request.form['response']
     if 'netid' in session:
@@ -162,12 +186,12 @@ def submit_response():
                 result_set = result_proxy.fetchall()
                 course_data = {column: value for column, value in zip(result_proxy.keys(), result_set[0])}
                 similarity_score = 1 - distance.cosine(session['user_vec'], model.get_word_vector(course_title))
-                print(session['user_vec'],model.get_word_vector(course_title))
             
             course_title = course_data['CourseTitle']
             course_code = course_data['CourseCode']
             professor = course_data['ProfessorName']
             course_description = course_data['CourseDescription']
+            course_dept = course_data['DepartmentName']
 
             # course gpa            
             with open('queries/Course_AvgGPA.sql', 'r') as file:
@@ -175,8 +199,28 @@ def submit_response():
             avg_gpa_query = sqlalchemy.text(avg_gpa_sql)
 
             avg_gpa_result = db_conn.execute(avg_gpa_query, {'course_code': course_code}).fetchone()
-            print(avg_gpa_result)
             avg_gpa = avg_gpa_result[1]
+    
+            with open('queries/Diversity.sql', 'r') as file:
+                diversity_sql = file.read()
+            diversity_query = sqlalchemy.text(diversity_sql)
+
+            diversity_result = db_conn.execute(diversity_query, {'DepartmentName': course_dept})
+            print(diversity_result)
+            diversity_index = "Diverse!" if diversity_result is not None else "Not Diverse!"
+            print(f"Average GPA: {avg_gpa}")
+            if avg_gpa:
+                with open('queries/Good_Professors.sql', 'r') as file:
+                    good_professor_sql = file.read()
+                good_professor_query = sqlalchemy.text(good_professor_sql)
+
+                good_professor_result = db_conn.execute(good_professor_query, {'ProfessorName': professor})
+                print(good_professor_result)
+                good_prof = "Good Professor!" if good_professor_result is not None else ""
+            else:
+                good_prof = ""
+
+
                 
     else:
         flash('You must be signed in to submit a response.')
