@@ -182,6 +182,19 @@ def submit_response():
         flash('You must be signed in to submit a response.')
     return redirect(url_for('index'))
 
+@app.route('/departments')
+def departments():
+    with pool.connect() as db_conn:
+
+        with open('queries/Department_AvgGPA.sql', 'r') as file:
+            dep_gpa_sql = file.read()
+        dep_gpa_query = sqlalchemy.text(dep_gpa_sql)
+
+        departments = db_conn.execute(dep_gpa_query).fetchall()
+        return render_template('departments.html', departments=departments)
+
+
+
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
     if 'netid' in session:

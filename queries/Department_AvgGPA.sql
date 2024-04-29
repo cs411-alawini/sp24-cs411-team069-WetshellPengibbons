@@ -24,4 +24,5 @@ FROM Department d
 LEFT JOIN CourseInfo ci ON d.DepartmentName = ci.DepartmentName
 LEFT JOIN AverageGPA ag ON ci.CourseCode = ag.CourseCode
 GROUP BY d.DepartmentName
+HAVING AvgGPA IS NOT NULL
 ORDER BY AvgGPA DESC;
