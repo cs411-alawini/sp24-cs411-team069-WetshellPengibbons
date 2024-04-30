@@ -12,7 +12,7 @@ from gensim.models import Word2Vec
 from scipy.spatial import distance
 import fasttext
 
-#Global Variables
+#vars
 course_title = ""
 course_code = ""
 professor = ""
@@ -21,23 +21,19 @@ avg_gpa = 0.0
 diversity_index = ""
 course_dept = ""
 good_prof = ""
-image_link = 'https://alawini.web.illinois.edu/wp-content/uploads/2021/11/Home-Alawini-scaled.jpg'
+image_link = 'https://cdn.discordapp.com/attachments/1199427965868572672/1234980475463008357/Add_a_heading_11.png?ex=6632b4b2&is=66316332&hm=38a295fcefadb53fdea9ba2e80d2b7cd2358a895e7ef714a7651fc4b67f56eec&'
 
 
-# Load Model to interpret Course
 model = fasttext.load_model("app/fasttext_model.bin")
 
-
-
-# Load configuration from environment variables for security and flexibility
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'app/cryptic-heaven-390921-29a111989a8c.json'
-SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")  # Fallback to 'default_secret_key'
+SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")  
 
-# Initialize Flask app
+# start flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# Google Cloud SQL connector setup
+# google clud
 connector = Connector()
 
 def getconn() -> sqlalchemy.engine.base.Connection:
@@ -50,7 +46,7 @@ def getconn() -> sqlalchemy.engine.base.Connection:
     )
     return conn
 
-# Configure SQLAlchemy to use connection factory
+# sql alch
 pool = sqlalchemy.create_engine(
     "mysql+pymysql://",
     creator=getconn,
@@ -58,13 +54,13 @@ pool = sqlalchemy.create_engine(
 )
 
 with pool.connect() as db_conn:
-    # get random course
+    # get course
     init_query = sqlalchemy.text("SELECT * FROM CourseInfo ORDER BY RAND() LIMIT 1")
     result_proxy = db_conn.execute(init_query)
     result_set = result_proxy.fetchall()
     course_data = {column: value for column, value in zip(result_proxy.keys(), result_set[0])}
 
-    # Store values
+    # update vals
     course_title = course_data['CourseTitle']
     course_code = course_data['CourseCode']
     professor = course_data['ProfessorName']
@@ -85,7 +81,7 @@ with pool.connect() as db_conn:
     diversity_query = sqlalchemy.text(diversity_sql)
 
     diversity_result = db_conn.execute(diversity_query, {'DepartmentName': course_dept}).fetchone()
-    print(f"Balls {avg_gpa}")
+
     diversity_index = "Diverse!" if diversity_result is not None else "Not Diverse!"
     if avg_gpa:
         with open('queries/Good_Professors.sql', 'r') as file:
@@ -129,14 +125,13 @@ def index():
                 db_conn.commit()
                 
 
-        session['netid'] = netid  # Store netid in session after successful insertion or failed attempt due to duplication
+        session['netid'] = netid 
         session['user_vec'] = [0]*100
         session['selected_courses'] = 0
         return redirect(url_for('index'))
     
-    # This will display the NetID or 'Not Signed in'
-    return render_template('index.html', form=form, netid=session.get('netid', 'Not Signed in'), course_title=course_title, 
-                            course_code=course_code, professor=professor, image_link=image_link, avg_gpa = avg_gpa, diversity_index=diversity_index, good_prof=good_prof)
+    # display stuff
+    return render_template('index.html', form=form, netid=session.get('netid', 'Not Signed in'), course_title=course_title, course_code=course_code, professor=professor, image_link=image_link, avg_gpa = avg_gpa, diversity_index=diversity_index, good_prof=good_prof)
 
 @app.route('/submit_response', methods=['POST'])
 def submit_response():
@@ -167,7 +162,7 @@ def submit_response():
                 db_conn.execute(update_stmt, {"response": user_response, "coursecode": course_code, "netid": netid })
                 db_conn.commit()
         
-        # If the user selects 'Yes', update preference vector
+        # update if user says ya
         if user_response:
             if session['selected_courses'] == 0:
                 weight = np.zeros(100)
@@ -176,7 +171,7 @@ def submit_response():
             session['user_vec'] = ((weight + model.get_word_vector(course_title)) / (session['selected_courses']+1)).tolist()
         session['selected_courses']+=1
 
-        # Get new course
+        # get new course
         with pool.connect() as db_conn:
             similarity_score = 0
             course_data = {}
@@ -220,7 +215,7 @@ def submit_response():
             else:
                 good_prof = ""         
                 
-    #not signed in
+    #not sign in
     else:
         flash('You must be signed in to submit a response.')
     return redirect(url_for('index'))
@@ -240,9 +235,7 @@ def search():
     query = request.args.get('query', '')
     if query:
         with pool.connect() as db_conn:
-            search_query = sqlalchemy.text(
-                "SELECT DISTINCT CourseCode, CourseTitle, CourseDescription FROM CourseInfo WHERE CourseTitle LIKE :query OR CourseDescription LIKE :query"
-            )
+            search_query = sqlalchemy.text("SELECT DISTINCT CourseCode, CourseTitle, CourseDescription FROM CourseInfo WHERE CourseTitle LIKE :query OR CourseDescription LIKE :query")
             results = db_conn.execute(search_query, {'query': f"%{query}%"}).fetchall()
     else:
         results = []
@@ -259,7 +252,7 @@ def delete_account():
             delete_stmt = sqlalchemy.text("DELETE FROM Users WHERE NetID = :netid")
             db_conn.execute(delete_stmt, {"netid": netid})
             db_conn.commit()
-        session.pop('netid', None)  # Remove netid from session
+        session.pop('netid', None)  # remove netid 
         flash('Your account has been successfully deleted.')
     else:
         flash('You are not signed in.')
