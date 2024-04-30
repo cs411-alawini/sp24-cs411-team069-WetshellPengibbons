@@ -1,0 +1,79 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Courses</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Course Search</h1>
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="query" placeholder="Enter part of a course title or description..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+    {% if results %}
+        <h2>Results:</h2>
+        <ul>
+            {% for result in results %}
+                <li>{{ result.CourseCode }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No courses found. Try different keywords.</p>
+    {% endif %}
+</body>
+</html> -->
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta viewport="width=device-width, initial-scale=1.0">
+    <title>Search Courses</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .course {
+            margin-bottom: 20px;  /* Space between each course entry */
+        }
+        .course-title {
+            font-size: 18px;  /* Larger text for the course title */
+            font-weight: bold;
+        }
+        .course-description {
+            margin-top: 5px;  /* Space between title and description */
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Course Search</h1>
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="query" placeholder="Enter keyword" value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+    {% if results %}
+        <h2>Results:</h2>
+        <div>
+            {% for result in results %}
+                <div class="course">
+                    <div class="course-title">{{ result.CourseCode }} | {{ result.CourseTitle }}</div>
+                    <p class="course-description">{{ result.CourseDescription }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No courses found.</p>
+    {% endif %}
+</body>
+</html> 

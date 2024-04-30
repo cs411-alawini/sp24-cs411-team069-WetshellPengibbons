@@ -237,6 +237,20 @@ def departments():
         departments = db_conn.execute(dep_gpa_query).fetchall()
         return render_template('departments.html', departments=departments)
 
+@app.route('/search')
+def search():
+    query = request.args.get('query', '')
+    if query:
+        with pool.connect() as db_conn:
+            search_query = sqlalchemy.text(
+                "SELECT DISTINCT CourseCode, CourseTitle, CourseDescription FROM CourseInfo WHERE CourseTitle LIKE :query OR CourseDescription LIKE :query"
+            )
+            results = db_conn.execute(search_query, {'query': f"%{query}%"}).fetchall()
+    else:
+        results = []
+    return render_template('search.html', results=results, query=query)
+
+
 
 
 @app.route('/delete_account', methods=['POST'])

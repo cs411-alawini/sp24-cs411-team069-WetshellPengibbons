@@ -74,6 +74,12 @@ CREATE TABLE MatchResult (
     CourseCode VARCHAR(10) NOT NULL,
     Response INT,
     PRIMARY KEY (NetID, CourseCode),
-    FOREIGN KEY (NetID) REFERENCES Users(NetID),
+    FOREIGN KEY (NetID) REFERENCES Users(NetID) ON DELETE CASCADE,
     FOREIGN KEY (CourseCode) REFERENCES CourseInfo(CourseCode)
+);
+
+CREATE TABLE ActionLog (
+    ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+    NetID VARCHAR(255),
+    Activity VARCHAR(255)
 );
