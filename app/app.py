@@ -218,10 +218,9 @@ def submit_response():
                 print(good_professor_result)
                 good_prof = "Good Professor!" if good_professor_result is not None else ""
             else:
-                good_prof = ""
-
-
+                good_prof = ""         
                 
+    #not signed in
     else:
         flash('You must be signed in to submit a response.')
     return redirect(url_for('index'))
@@ -229,7 +228,6 @@ def submit_response():
 @app.route('/departments')
 def departments():
     with pool.connect() as db_conn:
-
         with open('queries/Department_AvgGPA.sql', 'r') as file:
             dep_gpa_sql = file.read()
         dep_gpa_query = sqlalchemy.text(dep_gpa_sql)
