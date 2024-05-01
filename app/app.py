@@ -21,8 +21,7 @@ avg_gpa = 0.0
 diversity_index = ""
 course_dept = ""
 good_prof = ""
-image_link = 'https://cdn.discordapp.com/attachments/1199427965868572672/1234980475463008357/Add_a_heading_11.png?ex=6632b4b2&is=66316332&hm=38a295fcefadb53fdea9ba2e80d2b7cd2358a895e7ef714a7651fc4b67f56eec&'
-
+image_link = 'https://github.com/cs411-alawini/sp24-cs411-team069-WetshellPengibbons/blob/main/data/background_image.png?raw=true'
 
 model = fasttext.load_model("app/fasttext_model.bin")
 
